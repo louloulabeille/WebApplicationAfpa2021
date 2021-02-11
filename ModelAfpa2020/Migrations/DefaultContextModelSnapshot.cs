@@ -108,6 +108,27 @@ namespace ModelAfpa2020.Migrations
                     b.ToTable("OffreFormation");
                 });
 
+            modelBuilder.Entity("ModelAfpa.Utilisateur", b =>
+                {
+                    b.Property<int>("IdUtilisateur")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Courriel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logging")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Passworld")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdUtilisateur");
+
+                    b.ToTable("Utilisateur");
+                });
+
             modelBuilder.Entity("ModelAfpa.Etablissement", b =>
                 {
                     b.HasOne("ModelAfpa.Etablissement", "IdEtablissementRattachementNavigation")

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModelAfpa2020\ModelAfpa2020.csproj" />
+    <ProjectReference Include="..\WebApplicationAfpa2021\WebApplicationAfpa2021.csproj" />
   </ItemGroup>
 
 </Project>

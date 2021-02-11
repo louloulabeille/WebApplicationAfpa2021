@@ -41,8 +41,9 @@ namespace DataContext
             }
         }
 
-        public DbSet<Etablissement> etablissements { get; set; }
-        public DbSet<OffreFormation> offreFormations { get; set; }
+        public virtual DbSet<Etablissement> etablissements { get; set; }
+        public virtual DbSet<OffreFormation> offreFormations { get; set; }
+        public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -133,6 +134,11 @@ namespace DataContext
                 //    .HasForeignKey(d => d.IdProduitFormation)
                 //    .OnDelete(DeleteBehavior.ClientSetNull)
                 //    .HasConstraintName("FK_OffreFormation_ProduitDeFormation");
+            });
+
+            modelBuilder.Entity<Utilisateur>(entity=>
+            {
+                entity.HasKey(e => e.IdUtilisateur);
             });
         }
     }

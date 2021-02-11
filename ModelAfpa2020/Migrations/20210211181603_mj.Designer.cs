@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ModelAfpa2020.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20210211172509_initial")]
-    partial class initial
+    [Migration("20210211181603_mj")]
+    partial class mj
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -108,6 +108,27 @@ namespace ModelAfpa2020.Migrations
                     b.HasIndex("IdEtablissement");
 
                     b.ToTable("OffreFormation");
+                });
+
+            modelBuilder.Entity("ModelAfpa.Utilisateur", b =>
+                {
+                    b.Property<int>("IdUtilisateur")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Courriel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Logging")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Passworld")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdUtilisateur");
+
+                    b.ToTable("Utilisateur");
                 });
 
             modelBuilder.Entity("ModelAfpa.Etablissement", b =>
