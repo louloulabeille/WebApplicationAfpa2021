@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using ModelAfpa;
 using System.IO;
 
@@ -8,22 +9,20 @@ namespace DataContext
 {
     public class DefaultContext : DbContext
     {
-        public DefaultContext(DbContextOptions options) : base(options)
-        {
-        }
 
         protected DefaultContext()
         {
-            
         }
-
-        /*public static readonly ILoggerFactory Consignation = LoggerFactory.Create(builder =>
+        public DefaultContext(DbContextOptions options) : base(options)
+        {
+        }
+        public static readonly ILoggerFactory Consignation = LoggerFactory.Create(builder =>
         {
             builder.AddFilter("DbLoggerCategory.Database.Command.Name",
                 LogLevel.Information);
             builder.AddDebug();
             builder.AddConsole();
-        });*/
+        });
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,8 +34,9 @@ namespace DataContext
                 var config = builder.Build();
 
                 string connection = config.GetConnectionString("DefaultContext");
+                //optionsBuilder.UseSqlServer(connection, b => b.MigrationsAssembly("ModelAfpa2020"))
                 optionsBuilder.UseSqlServer(connection)
-                //.UseLoggerFactory(Consignation)
+                .UseLoggerFactory(Consignation)
                 .EnableServiceProviderCaching(false);
             }
         }

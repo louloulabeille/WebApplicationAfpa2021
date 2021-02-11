@@ -16,8 +16,9 @@ namespace WebApplicationAfpa2021.Controllers
             _context = context;
         }
 
-        public IActionResult Index(DefaultContext context)
+        public IActionResult Index(int? id)
         {
+            this.ViewBag.id = id==null?0:id;
             var query = _context.etablissements.ToList();
             return View(query);
         }
