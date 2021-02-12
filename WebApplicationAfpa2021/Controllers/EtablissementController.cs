@@ -22,5 +22,10 @@ namespace WebApplicationAfpa2021.Controllers
             var query = _context.etablissements.ToList();
             return View(query);
         }
+
+        public IActionResult Edit(int? id)
+        {
+            return View();
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace DataContext
 
         public virtual DbSet<Etablissement> etablissements { get; set; }
         public virtual DbSet<OffreFormation> offreFormations { get; set; }
-        public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
+        public virtual DbSet<Utilisateur> utilisateurs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -136,9 +136,28 @@ namespace DataContext
                 //    .HasConstraintName("FK_OffreFormation_ProduitDeFormation");
             });
 
-            modelBuilder.Entity<Utilisateur>(entity=>
+            modelBuilder.Entity<Utilisateur>(entity =>
             {
+                entity.ToTable("Utilisateur");
                 entity.HasKey(e => e.IdUtilisateur);
+
+                entity.Property(e => e.IdUtilisateur)
+                .IsRequired();
+
+                entity.Property(e => e.Logging)
+                .IsRequired()
+                .HasMaxLength(255)
+                .IsUnicode(false);
+
+                entity.Property(e => e.Passworld)
+                .IsRequired()
+                .HasMaxLength(255)
+                .IsUnicode(false);
+
+                entity.Property(e => e.Courriel)
+                .IsRequired()
+                .HasMaxLength(255)
+                .IsUnicode(false);
             });
         }
     }
