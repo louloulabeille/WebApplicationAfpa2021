@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -14,7 +15,7 @@ namespace ModelAfpa
             InverseIdEtablissementRattachementNavigation = new HashSet<Etablissement>();
             //OffreFormations = new HashSet<OffreFormation>();
         }
-
+        [Key]
         public string IdEtablissement { get; set; }
         public string DesignationEtablissement { get; set; }
         public string ComplementIdentificationEtablissement { get; set; }
