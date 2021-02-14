@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ModelAfpa2020\ModelAfpa2020.csproj" />
+  </ItemGroup>
+
 </Project>

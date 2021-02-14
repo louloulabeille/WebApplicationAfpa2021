@@ -27,6 +27,16 @@ namespace WebApplicationAfpa2021
         {
             services.AddControllersWithViews();
             services.AddDbContext<DefaultContext>();
+            services.AddRazorPages();
+            services.AddAuthentication()
+            .AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
+
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,10 +57,15 @@ namespace WebApplicationAfpa2021
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthorization();     //-- utilisation du systmeme authentification
+            app.UseAuthentication();    //-- utilisation du systeme de authenfication identity
+            //app.UseMvc();
+            app.UseCookiePolicy();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();      // pour l'authentification utilisation de génération depage razor automatique
                 endpoints.MapControllerRoute(
                     name: "Etablissement",
                     pattern: "etablissement-afpa",

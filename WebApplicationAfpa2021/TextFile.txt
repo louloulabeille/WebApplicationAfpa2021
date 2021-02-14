@@ -1,0 +1,2 @@
+﻿id client :751293089302-dh9ksp2a9jnfoddlho2e9l2vr3dr814f.apps.googleusercontent.com
+code secret :_mw0SK26JoMUxvgG5rMIrt75

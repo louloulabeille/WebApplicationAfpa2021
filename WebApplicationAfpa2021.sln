@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelAfpa2020", "ModelAfpa2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{79388713-8F19-46DB-8955-AC3E0AA0D706}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackOffice", "BackOffice\BackOffice.csproj", "{45FD86AD-EE15-4F87-AEFF-007C6512D984}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackOffice", "BackOffice\BackOffice.csproj", "{45FD86AD-EE15-4F87-AEFF-007C6512D984}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
