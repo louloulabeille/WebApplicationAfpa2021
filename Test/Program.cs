@@ -14,11 +14,11 @@ namespace Test
         {
             Console.WriteLine("Hello World!");
 
-            ConfigurationBuilder bulder = new ConfigurationBuilder();
-            bulder.SetBasePath(Directory.GetCurrentDirectory())
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json"); ;
 
-            var config = bulder.Build();
+            var config = builder.Build();
 
             string connection = config.GetConnectionString("DefaultContext");
             DbContextOptionsBuilder optionsBulder = new DbContextOptionsBuilder();

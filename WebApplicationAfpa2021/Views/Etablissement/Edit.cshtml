@@ -2,6 +2,12 @@
 
 @{
     ViewData["Title"] = "Edit";
+    List<ModelAfpa.Etablissement> listeEtablissement = null;
+    listeEtablissement = ViewBag.IdEtablissementRattachement;
+    listeEtablissement.Insert(0,new ModelAfpa.Etablissement());
+    var listeItemEtablissement = listeEtablissement
+        .Where(e=>e.IdEtablissement != ViewData.Model.IdEtablissement)
+        .Select(e => new SelectListItem() { Text = e.DesignationEtablissement, Value = e.IdEtablissement });
 }
 
 <h1>Edit</h1>
@@ -45,7 +51,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdEtablissementRattachement" class="control-label"></label>
-                <select asp-for="IdEtablissementRattachement" class="form-control" asp-items="ViewBag.IdEtablissementRattachement"></select>
+                <select itemscope asp-for="IdEtablissementRattachement" class="form-control" asp-items="listeItemEtablissement"></select>
                 <span asp-validation-for="IdEtablissementRattachement" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -58,7 +64,6 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

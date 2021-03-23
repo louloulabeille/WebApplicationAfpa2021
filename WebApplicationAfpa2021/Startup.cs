@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Constraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApplicationAfpa2021
 {
@@ -27,7 +29,17 @@ namespace WebApplicationAfpa2021
         {
             services.AddControllersWithViews();
             services.AddDbContext<DefaultContext>();
-            services.AddRazorPages();
+            //services.AddMvc();
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options=> 
+                {
+                    options.Conventions.AuthorizePage("/EtablissementController/index");
+                });
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+            }); 
             services.AddAuthentication()
             .AddGoogle(options =>
             {
@@ -36,6 +48,42 @@ namespace WebApplicationAfpa2021
 
                 options.ClientId = googleAuthNSection["ClientId"];
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
+            })
+            .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
             });
         }
 
@@ -52,28 +100,53 @@ namespace WebApplicationAfpa2021
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();     //-- utilisation du systmeme authentification
-            app.UseAuthentication();    //-- utilisation du systeme de authenfication identity
-            //app.UseMvc();
             app.UseCookiePolicy();
+            app.UseSession();
 
-            app.UseEndpoints(endpoints =>
+            app.UseAuthorization();     //-- utilisation du systmeme authentification
+            app.UseAuthentication();    //-- utilisation du systeme de authenfication identity        
+            
+
+            app.UseEndpoints(endpoints => 
             {
                 endpoints.MapControllers();
-                endpoints.MapRazorPages();      // pour l'authentification utilisation de génération depage razor automatique
+                endpoints.MapRazorPages();      // pour l'authentification utilisation de génération des pages razor automatique
+                
+                endpoints.MapControllerRoute(
+                    name: "Debut-Aventure",
+                    pattern: "Debut-Aventure",
+                    defaults: new
+                    {
+                        controller = "Paragraphe",
+                        action = "index",
+
+                    }
+                    );
+                endpoints.MapControllerRoute(
+                    name: "Vue-Etablissement",
+                    pattern: "Etablissement-Vue/{id}",
+                    defaults: new
+                    {
+                        controller = "Etablissement",
+                        action = "Edit"
+                    },
+                    constraints: new { id = new EtablissementLogConstraint() }
+                    //constraints: new { id = @"^[0-9]{5}$" }
+                    );
+
                 endpoints.MapControllerRoute(
                     name: "Etablissement",
                     pattern: "etablissement-afpa",
-                    defaults : new {
+                    defaults: new {
                         controller = "Etablissement",
-                        action = "index"
-                    }
-                    ) ;
+                        action = "index"}
+                    );
 
                 endpoints.MapControllerRoute(
                     name: "default",

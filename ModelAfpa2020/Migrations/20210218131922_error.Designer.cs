@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ModelAfpa2020.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20210211181603_mj")]
-    partial class mj
+    [Migration("20210218131922_error")]
+    partial class error
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,7 @@ namespace ModelAfpa2020.Migrations
                         .IsFixedLength(true);
 
                     b.Property<string>("CodePostalEtablissement")
+                        .IsRequired()
                         .HasMaxLength(5)
                         .IsUnicode(false)
                         .HasColumnType("char(5)")
@@ -131,6 +132,72 @@ namespace ModelAfpa2020.Migrations
                     b.ToTable("Utilisateur");
                 });
 
+            modelBuilder.Entity("ModelAfpa2020.Models.Paragraphe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Paragraphe");
+                });
+
+            modelBuilder.Entity("ModelAfpa2020.Models.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ParagrapheId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParagrapheId")
+                        .IsUnique();
+
+                    b.ToTable("Question");
+                });
+
+            modelBuilder.Entity("ModelAfpa2020.Models.Reponse", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Reponse");
+                });
+
             modelBuilder.Entity("ModelAfpa.Etablissement", b =>
                 {
                     b.HasOne("ModelAfpa.Etablissement", "IdEtablissementRattachementNavigation")
@@ -152,11 +219,39 @@ namespace ModelAfpa2020.Migrations
                     b.Navigation("IdEtablissementNavigation");
                 });
 
+            modelBuilder.Entity("ModelAfpa2020.Models.Question", b =>
+                {
+                    b.HasOne("ModelAfpa2020.Models.Paragraphe", null)
+                        .WithOne("MaQuestion")
+                        .HasForeignKey("ModelAfpa2020.Models.Question", "ParagrapheId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ModelAfpa2020.Models.Reponse", b =>
+                {
+                    b.HasOne("ModelAfpa2020.Models.Question", null)
+                        .WithMany("MesPeponses")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ModelAfpa.Etablissement", b =>
                 {
                     b.Navigation("InverseIdEtablissementRattachementNavigation");
 
                     b.Navigation("OffreFormations");
+                });
+
+            modelBuilder.Entity("ModelAfpa2020.Models.Paragraphe", b =>
+                {
+                    b.Navigation("MaQuestion");
+                });
+
+            modelBuilder.Entity("ModelAfpa2020.Models.Question", b =>
+                {
+                    b.Navigation("MesPeponses");
                 });
 #pragma warning restore 612, 618
         }

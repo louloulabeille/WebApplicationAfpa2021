@@ -4,8 +4,8 @@
     ViewData["Title"] = "Etablissement";
 }
 
-<h1>Etablissement @ViewBag.id</h1>
-
+@*<h1>Etablissement @ViewBag.id</h1>*@
+<h1>@ViewBag.Toto</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -31,7 +31,7 @@
                 @Html.DisplayNameFor(model => model.VilleEtablissement)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdEtablissementRattachementNavigation)
+                @Html.DisplayNameFor(model => model.IdEtablissementRattachementNavigation.DesignationEtablissement)
             </th>
             <th></th>
         </tr>
@@ -58,10 +58,10 @@
                 @Html.DisplayFor(modelItem => item.VilleEtablissement)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdEtablissementRattachementNavigation.IdEtablissement)
+                @Html.DisplayFor(modelItem => item.IdEtablissementRattachementNavigation.DesignationEtablissement)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdEtablissement">Edit</a> |
+                <a asp-route="Vue-Etablissement" asp-route-id="@item.IdEtablissement" >Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.IdEtablissement">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdEtablissement">Delete</a>
             </td>

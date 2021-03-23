@@ -4,14 +4,16 @@ using DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ModelAfpa2020.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20210218131529_error3")]
+    partial class error3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,21 +184,13 @@ namespace ModelAfpa2020.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ParagrapheId")
+                    b.Property<int>("Description")
                         .HasColumnType("int");
 
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParagrapheId")
-                        .IsUnique()
-                        .HasFilter("[ParagrapheId] IS NOT NULL");
 
                     b.HasIndex("QuestionId");
 
@@ -235,10 +229,6 @@ namespace ModelAfpa2020.Migrations
 
             modelBuilder.Entity("ModelAfpa2020.Models.Reponse", b =>
                 {
-                    b.HasOne("ModelAfpa2020.Models.Paragraphe", null)
-                        .WithOne("MaReponse")
-                        .HasForeignKey("ModelAfpa2020.Models.Reponse", "ParagrapheId");
-
                     b.HasOne("ModelAfpa2020.Models.Question", null)
                         .WithMany("MesPeponses")
                         .HasForeignKey("QuestionId")
@@ -256,8 +246,6 @@ namespace ModelAfpa2020.Migrations
             modelBuilder.Entity("ModelAfpa2020.Models.Paragraphe", b =>
                 {
                     b.Navigation("MaQuestion");
-
-                    b.Navigation("MaReponse");
                 });
 
             modelBuilder.Entity("ModelAfpa2020.Models.Question", b =>

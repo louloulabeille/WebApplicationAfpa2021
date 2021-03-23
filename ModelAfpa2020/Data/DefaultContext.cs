@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ModelAfpa;
+using ModelAfpa2020.Models;
 using System.IO;
 
 
@@ -16,6 +17,7 @@ namespace DataContext
         public DefaultContext(DbContextOptions options) : base(options)
         {
         }
+
         public static readonly ILoggerFactory Consignation = LoggerFactory.Create(builder =>
         {
             builder.AddFilter("DbLoggerCategory.Database.Command.Name",
@@ -35,6 +37,7 @@ namespace DataContext
 
                 string connection = config.GetConnectionString("DefaultContext");
                 //optionsBuilder.UseSqlServer(connection, b => b.MigrationsAssembly("ModelAfpa2020"))
+                //optionsBuilder.UseMySQL(connection)
                 optionsBuilder.UseSqlServer(connection)
                 .UseLoggerFactory(Consignation)
                 .EnableServiceProviderCaching(false);
@@ -44,6 +47,9 @@ namespace DataContext
         public virtual DbSet<Etablissement> etablissements { get; set; }
         public virtual DbSet<OffreFormation> offreFormations { get; set; }
         public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
+        public virtual DbSet<Paragraphe> Paragraphes { get; set; }
+        public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<Reponse> Reponses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
